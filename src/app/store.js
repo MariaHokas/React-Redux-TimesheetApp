@@ -1,8 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { createLogger } from 'redux-logger';
+import rootReducer from '../_reducers';
 
-export default configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
-});
+const loggerMiddleware = createLogger();
+
+export const store = createStore(
+    rootReducer, 
+    +  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    applyMiddleware(
+        thunkMiddleware,
+        loggerMiddleware
+    )
+
+);
+export default store;
